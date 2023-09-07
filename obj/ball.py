@@ -1,4 +1,7 @@
-x_initial_pos = 1280/2
-y_inital_pos = 720/2
+WIDTH, HEIGHT = 1280, 720
+
+x = 1280/2
+y = 720/2
 radius = 15
 width = 500
+center = (WIDTH/2,HEIGHT/2)

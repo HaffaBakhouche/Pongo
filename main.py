@@ -1,40 +1,41 @@
 #!/usr/bin/python3
 import pygame
 import color
-from obj import left_line , right_line, ball
-
+import random
+import sys
+from obj import ball, joueurs, opposant
 
 pygame.init()
 
-screen = pygame.display.set_mode((1280, 720))
-pygame.display.set_caption("Pongo! By HaffaBakh")
+WIDTH, HEIGHT = 1280, 720
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Pongo!")
+CLOCK = pygame.time.Clock()
+Score_Joueur, Score_Opposant = 0, 0
+x_speed, y_speed = 1, 1
 
 runs = True
 while runs:
+    keys_pressed = pygame.key.get_pressed()
+    if keys_pressed[pygame.K_UP]:
+        if joueurs.player.top > 0:
+            joueurs.player.top -= 2
+    if keys_pressed[pygame.K_DOWN]:
+        if joueurs.player.bottom < HEIGHT:
+            joueurs.player.bottom += 2
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             runs = False
 
-    pygame.time.delay(1)
-    keys = pygame.key.get_pressed()
-    screen.fill(color.BLACK)
+    pygame.draw.rect(screen,color.WHITE,joueurs.player)
+    pygame.draw.rect(screen,color.WHITE,joueurs.opponent)
 
-    # Left line
-    if keys[pygame.K_UP] and left_line.y_initial_pos > 0:
-        left_line.y_initial_pos -= left_line.velocity
-        left_line.y_current_pos -= left_line.velocity
 
-    if keys[pygame.K_DOWN] and left_line.y_initial_pos < 618:
-        left_line.y_initial_pos += left_line.velocity
-        left_line.y_current_pos += left_line.velocity
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
 
-    pygame.draw.line(screen,color.WHITE, (left_line.x_initial_pos, left_line.y_initial_pos), (left_line.x_current_pos, left_line.y_current_pos), left_line.obj_width)
-
-    # Right line
-    pygame.draw.line(screen,color.WHITE, (right_line.x_initial_pos, right_line.y_initial_pos), (right_line.x_current_pos, right_line.y_current_pos), right_line.obj_width)
-
-    # Ball
-
-    pygame.draw.circle(screen,color.BLUE,(ball.x_initial_pos,ball.y_inital_pos),(ball.radius),ball.width)
-    pygame.display.flip()
-pygame.quit()
+    pygame.display.update()
+CLOCK.tick(300)
